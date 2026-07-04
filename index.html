@@ -119,6 +119,7 @@
 </head>
 <body>
 
+    <!-- Screen 1: Welcome -->
     <div id="screen1" class="glass-card active">
         <div style="margin: auto 0;">
             <div class="heart-wrapper">
@@ -126,12 +127,13 @@
                     <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/>
                 </svg>
             </div>
-            <h2>For You</h2>
-            <p>I know things have been difficult lately, but there is something I want to say.</p>
+            <h2>Hi Sio,</h2>
+            <p>I know things have been difficult lately, but there is something I want to say to you.</p>
         </div>
         <button class="primary-btn" onclick="switchScreen('screen1', 'screen2')">Open</button>
     </div>
 
+    <!-- Screen 2: Envelope & Modal Letter -->
     <div id="screen2" class="glass-card">
         <div id="focusOverlay"></div>
         <h2 id="tapInstruction" style="position: absolute; top: 55px; transition: opacity 0.3s; width: 100%; text-align: center; left: 0; z-index: 2;">Tap to open</h2>
@@ -148,13 +150,12 @@
 
         <div id="letterModal">
             <h3>To My Favorite Person,</h3>
-            <p>
-                [Insert your apology here. Be honest, take responsibility, and tell her how much she means to you. Acknowledge her feelings and why she is upset.]
-            </p>
-            <p>
-                [Explain that you attached this to a gift because you want to show her, not just tell her, that you are committed to fixing things.]
-            </p>
-            <p style="text-align: right; margin-top: 20px; font-weight: 600;">Yours truly,<br>Me</p>
+            <p>Hi Sio,</p>
+            <p>I am writing this because I know I owe you an apology. Your messages hit me hard, and they made me realize how much I have hurt you by letting my own pride and insecurities dictate how I treat us. If you were wondering why I did not reply, I was composing myself and thinking for the past few weeks, kung yung mga ginawa ko ba ay tama and if that affected what happened now. I am sorry for making you feel like you were not enough, or that I was not enough for you. I was looking for things in myself that you never asked for and never wanted. I realize now that by trying to protect my ego, I was actually pushing away the person I care about the most. I was wrong to make that choice for both of us, and I am sorry about that.</p>
+            <p>I hear you clearly. You do not need me to be anyone other than who I am, and I regret that I did not see that sooner. I understand why you feel the way you do, and I hate that I made you question yourself and our situation. If you are still open to it, I would love the chance to try again. I want to build a connection with you properly, and I want to show you that I can be the man you deserve. I know I have a lot to make up for, and I am willing to do that.</p>
+            <p>These are just simple gifts and I hope they make it up to you. I am sorry, I did not find any peonies.</p>
+            <p>Please take all the time you need. I will be here whenever you are ready to talk.</p>
+            <p style="text-align: right; margin-top: 20px; font-weight: 600;">Yours truly, Lance</p>
             
             <div style="text-align: center; margin-top: 20px;">
                 <button class="done-btn" onclick="switchScreen('screen2', 'screen3')">Next</button>
@@ -162,6 +163,7 @@
         </div>
     </div>
 
+    <!-- Screen 3: The Final Open-Ended Question -->
     <div id="screen3" class="glass-card">
         <div style="margin: auto 0;">
             <h2 style="font-size: 26px; margin-bottom: 25px;">I know I need to earn your trust back, but can I try again?</h2>
