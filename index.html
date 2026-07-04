@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For You</title>
+    <style>
+        /* Pro-level Design System / Variables */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #f5e3e6 50%, #f3e7e9 100%);
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --text-main: #2c2425;
+            --text-accent: #9a2b42;
+            --btn-gradient: linear-gradient(135deg, #c74b62 0%, #9a2b42 100%);
+            --btn-shadow: 0 10px 20px rgba(154, 43, 66, 0.25);
+            
+            /* Envelope Colors */
+            --env-back: #e8a5b0;
+            --env-front-left: #df95a1;
+            --env-front-right: #e49ca8;
+            --env-front-bottom: #d68996;
+            --env-flap: #e8a5b0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-gradient); background-size: 200% 200%;
+            animation: meshGradient 12s ease infinite;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; height: 100dvh; overflow: hidden; color: var(--text-main);
+        }
+
+        @keyframes meshGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        /* Perfectly Proportioned Glass Card */
+        .glass-card {
+            background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border); padding: 45px 30px; border-radius: 36px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
+            width: 90%; max-width: 420px; min-height: 580px; 
+            z-index: 10; position: absolute; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+            opacity: 0; visibility: hidden; transform: translateY(20px) scale(0.98);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden; 
+        }
+
+        .glass-card.active { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+
+        .glass-card.active > *:not(#focusOverlay):not(#letterModal) { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        .glass-card.active > *:nth-child(1):not(#focusOverlay):not(#letterModal) { animation-delay: 0.1s; }
+        .glass-card.active > *:nth-child(2):not(#focusOverlay):not(#letterModal) { animation-delay: 0.2s; }
+        .glass-card.active > *:nth-child(3):not(#focusOverlay):not(#letterModal) { animation-delay: 0.3s; }
+        
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        h2 { color: var(--text-accent); font-size: 25px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 16px; max-width: 95%; position: relative; z-index: 2; }
+        p { font-size: 16px; line-height: 1.6; color: rgba(44, 36, 37, 0.85); margin-bottom: 30px; max-width: 95%; position: relative; z-index: 2; }
+
+        button.primary-btn {
+            background: var(--btn-gradient); color: white; border: none; padding: 16px 36px; border-radius: 40px;
+            font-size: 16px; font-weight: 600; letter-spacing: 0.3px; box-shadow: var(--btn-shadow);
+            cursor: pointer; transition: all 0.2s ease; width: 90%; max-width: 260px; margin-top: auto; position: relative; z-index: 2;
+        }
+        button.primary-btn:active { transform: scale(0.96); }
+
+        .heart-wrapper { height: 110px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; position: relative; z-index: 2;}
+        .premium-heart-svg { width: 85px; height: 85px; fill: var(--text-accent); filter: drop-shadow(0px 10px 20px rgba(154, 43, 66, 0.3)); animation: grandPulse 2s infinite cubic-bezier(0.25, 1, 0.5, 1); }
+        @keyframes grandPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+
+        /* --- Page 2: Advanced Letter Modal System --- */
+        #focusOverlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(30, 20, 22, 0.45); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            z-index: 15; opacity: 0; pointer-events: none; transition: opacity 0.6s ease;
+        }
+        #focusOverlay.active { opacity: 1; pointer-events: auto; }
+
+        .envelope-wrapper {
+            position: relative; width: 280px; height: 180px; cursor: pointer; perspective: 1000px; 
+            margin: 0 auto; transition: all 0.5s ease; z-index: 10;
+        }
+        .envelope-wrapper.opened { opacity: 0; transform: scale(0.8) translateY(20px); pointer-events: none; }
+        .envelope-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--env-back); border-radius: 8px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+        .envelope-front { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border-radius: 0 0 8px 8px;}
+        .env-left { position: absolute; left: 0; top: 0; width: 50%; height: 100%; background: var(--env-front-left); clip-path: polygon(0 0, 100% 50%, 0 100%); }
+        .env-right { position: absolute; right: 0; top: 0; width: 50%; height: 100%; background: var(--env-front-right); clip-path: polygon(100% 0, 0 50%, 100% 100%); }
+        .env-bottom { position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; background: var(--env-front-bottom); clip-path: polygon(0 100%, 50% 0, 100% 100%); }
+        .envelope-flap {
+            position: absolute; top: 0; left: 0; width: 100%; height: 65%; background: var(--env-flap); border-radius: 8px 8px 0 0; 
+            clip-path: polygon(0 0, 100% 0, 50% 100%); filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
+        }
+
+        #letterModal {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -40%) scale(0.9);
+            width: 88%; max-width: 360px; height: 75%; max-height: 480px;
+            background: #ffffff; border-radius: 12px; z-index: 20; padding: 30px 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            text-align: left; overflow-y: auto; opacity: 0; pointer-events: none;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+            background-image: linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px); background-size: 100% 26px;
+            scrollbar-width: thin; scrollbar-color: rgba(154, 43, 66, 0.2) transparent;
+        }
+        #letterModal.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+        #letterModal h3 { color: var(--text-accent); font-size: 19px; margin-bottom: 15px; font-weight: 700; text-align: center;}
+        #letterModal p { font-size: 15px; line-height: 1.7; margin-bottom: 15px; color: #333; }
+
+        .done-btn {
+            background: var(--btn-gradient); color: white; border: none; padding: 12px 28px; border-radius: 25px; font-size: 15px; font-weight: 600;
+            box-shadow: 0 4px 10px rgba(154, 43, 66, 0.2); cursor: pointer; transition: all 0.2s ease; margin-top: 15px; display: inline-block;
+        }
+        .done-btn:active { transform: scale(0.95); }
+
+        /* --- Page 3: Final Message --- */
+        #screen3 { justify-content: center; }
+    </style>
+</head>
+<body>
+
+    <div id="screen1" class="glass-card active">
+        <div style="margin: auto 0;">
+            <div class="heart-wrapper">
+                <svg class="premium-heart-svg" viewBox="0 0 32 29.6">
+                    <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/>
+                </svg>
+            </div>
+            <h2>For You</h2>
+            <p>I know things have been difficult lately, but there is something I want to say.</p>
+        </div>
+        <button class="primary-btn" onclick="switchScreen('screen1', 'screen2')">Open</button>
+    </div>
+
+    <div id="screen2" class="glass-card">
+        <div id="focusOverlay"></div>
+        <h2 id="tapInstruction" style="position: absolute; top: 55px; transition: opacity 0.3s; width: 100%; text-align: center; left: 0; z-index: 2;">Tap to open</h2>
+        
+        <div class="envelope-wrapper" id="envelopeWidget" onclick="openLetter()">
+            <div class="envelope-back"></div>
+            <div class="envelope-front">
+                <div class="env-left"></div>
+                <div class="env-right"></div>
+                <div class="env-bottom"></div>
+            </div>
+            <div class="envelope-flap"></div>
+        </div>
+
+        <div id="letterModal">
+            <h3>To My Favorite Person,</h3>
+            <p>
+                [Insert your apology here. Be honest, take responsibility, and tell her how much she means to you. Acknowledge her feelings and why she is upset.]
+            </p>
+            <p>
+                [Explain that you attached this to a gift because you want to show her, not just tell her, that you are committed to fixing things.]
+            </p>
+            <p style="text-align: right; margin-top: 20px; font-weight: 600;">Yours truly,<br>Me</p>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="done-btn" onclick="switchScreen('screen2', 'screen3')">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen3" class="glass-card">
+        <div style="margin: auto 0;">
+            <h2 style="font-size: 26px; margin-bottom: 25px;">I know I need to earn your trust back, but can I try again?</h2>
+            <p style="margin-bottom: 0;">Please take all the time you need. I'll be here whenever you're ready to talk.</p>
+        </div>
+    </div>
+
+    <script>
+        function switchScreen(currentId, nextId) {
+            const current = document.getElementById(currentId);
+            const next = document.getElementById(nextId);
+            
+            current.classList.remove('active');
+            
+            setTimeout(() => {
+                next.classList.add('active');
+            }, 500); 
+        }
+
+        function openLetter() {
+            const envelope = document.getElementById('envelopeWidget');
+            const overlay = document.getElementById('focusOverlay');
+            const modal = document.getElementById('letterModal');
+            const instruction = document.getElementById('tapInstruction');
+
+            if(!envelope.classList.contains('opened')) {
+                envelope.classList.add('opened'); 
+                overlay.classList.add('active');  
+                modal.classList.add('active');    
+                instruction.style.opacity = '0';  
+            }
+        }
+    </script>
+</body>
+</html>
