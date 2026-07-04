@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>For You</title>
     <style>
-        /* Pro-level Design System / Variables */
+        /* Premium Design System */
         :root {
-            --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #f5e3e6 50%, #f3e7e9 100%);
-            --glass-bg: rgba(255, 255, 255, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.8);
+            --bg-gradient: linear-gradient(-45deg, #fdfbfb, #f5e3e6, #f8cdda, #f3a6b5);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.9);
             --text-main: #2c2425;
             --text-accent: #9a2b42;
             --btn-gradient: linear-gradient(135deg, #c74b62 0%, #9a2b42 100%);
             --btn-shadow: 0 10px 20px rgba(154, 43, 66, 0.25);
+            --btn-shadow-hover: 0 15px 30px rgba(154, 43, 66, 0.4);
             
             /* Envelope Colors */
             --env-back: #e8a5b0;
@@ -25,66 +26,66 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-gradient); background-size: 200% 200%;
-            animation: meshGradient 12s ease infinite;
-            display: flex; justify-content: center; align-items: center;
-            height: 100vh; height: 100dvh; overflow: hidden; color: var(--text-main);
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; 
+            background: var(--bg-gradient); background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            height: 100dvh; display: flex; justify-content: center; align-items: center; 
+            overflow: hidden; color: var(--text-main); position: relative;
         }
 
-        @keyframes meshGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* Perfectly Proportioned Glass Card */
+        /* Floating Background Particles */
+        .particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; overflow: hidden; }
+        .particle { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.6); filter: blur(3px); animation: floatUp linear infinite; }
+        @keyframes floatUp { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 20% { opacity: 0.8; } 80% { opacity: 0.8; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
+
+        /* Glass Card with Smooth CSS Exits/Entries */
         .glass-card {
-            background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            background: var(--glass-bg); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
             border: 1px solid var(--glass-border); padding: 45px 30px; border-radius: 36px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
-            width: 90%; max-width: 420px; min-height: 580px; 
+            box-shadow: 0 30px 60px rgba(154, 43, 66, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
+            width: 90%; max-width: 420px; min-height: 520px; 
             z-index: 10; position: absolute; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; text-align: center;
-            opacity: 0; visibility: hidden; transform: translateY(20px) scale(0.98);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            overflow: hidden; 
+            align-items: center; justify-content: center; text-align: center; gap: 15px; /* Perfectly centers content */
+            opacity: 0; pointer-events: none; transform: translateY(40px) scale(0.95);
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
-
-        .glass-card.active { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
-
-        .glass-card.active > *:not(#focusOverlay):not(#letterModal) { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
-        .glass-card.active > *:nth-child(1):not(#focusOverlay):not(#letterModal) { animation-delay: 0.1s; }
-        .glass-card.active > *:nth-child(2):not(#focusOverlay):not(#letterModal) { animation-delay: 0.2s; }
-        .glass-card.active > *:nth-child(3):not(#focusOverlay):not(#letterModal) { animation-delay: 0.3s; }
         
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .glass-card.active { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+        .glass-card.exit { opacity: 0; transform: translateY(-40px) scale(0.95); }
 
-        h2 { color: var(--text-accent); font-size: 25px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 16px; max-width: 95%; position: relative; z-index: 2; }
-        p { font-size: 16px; line-height: 1.6; color: rgba(44, 36, 37, 0.85); margin-bottom: 30px; max-width: 95%; position: relative; z-index: 2; }
+        /* Inner Element Staggered Fade-in */
+        .glass-card > div, .glass-card > button { opacity: 0; transform: translateY(15px); transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+        .glass-card.active > div:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0.2s; }
+        .glass-card.active > div:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 0.4s; }
+        .glass-card.active > button { opacity: 1; transform: translateY(0); transition-delay: 0.6s; }
 
+        h2 { color: var(--text-accent); font-size: 28px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 10px; }
+        p { font-size: 16px; line-height: 1.6; color: #4a3b3d; margin-bottom: 15px; padding: 0 10px; }
+
+        /* Animated Button */
         button.primary-btn {
-            background: var(--btn-gradient); color: white; border: none; padding: 16px 36px; border-radius: 40px;
-            font-size: 16px; font-weight: 600; letter-spacing: 0.3px; box-shadow: var(--btn-shadow);
-            cursor: pointer; transition: all 0.2s ease; width: 90%; max-width: 260px; margin-top: auto; position: relative; z-index: 2;
+            background: var(--btn-gradient); color: white; border: none; padding: 16px 36px; 
+            border-radius: 40px; font-size: 16px; font-weight: 600; letter-spacing: 0.5px; 
+            box-shadow: var(--btn-shadow); cursor: pointer; margin-top: 15px;
+            transition: all 0.3s ease; position: relative; overflow: hidden; display: inline-block;
         }
-        button.primary-btn:active { transform: scale(0.96); }
+        button.primary-btn:hover { transform: translateY(-3px); box-shadow: var(--btn-shadow-hover); }
+        button.primary-btn:active { transform: translateY(1px) scale(0.96); box-shadow: var(--btn-shadow); }
 
-        .heart-wrapper { height: 110px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; position: relative; z-index: 2;}
-        .premium-heart-svg { width: 85px; height: 85px; fill: var(--text-accent); filter: drop-shadow(0px 10px 20px rgba(154, 43, 66, 0.3)); animation: grandPulse 2s infinite cubic-bezier(0.25, 1, 0.5, 1); }
-        @keyframes grandPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+        /* Heart Animation */
+        .heart-wrapper { height: 90px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; }
+        .premium-heart-svg { width: 75px; height: 75px; fill: var(--text-accent); filter: drop-shadow(0px 10px 20px rgba(154, 43, 66, 0.3)); animation: grandPulse 3s ease-in-out infinite; }
+        @keyframes grandPulse { 0%, 100% { transform: scale(1) translateY(0); } 50% { transform: scale(1.08) translateY(-8px); filter: drop-shadow(0px 15px 25px rgba(154, 43, 66, 0.5)); } }
 
-        /* --- Page 2: Advanced Letter Modal System --- */
-        #focusOverlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(30, 20, 22, 0.45); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            z-index: 15; opacity: 0; pointer-events: none; transition: opacity 0.6s ease;
-        }
-        #focusOverlay.active { opacity: 1; pointer-events: auto; }
-
+        /* ENVELOPE STYLES */
         .envelope-wrapper {
-            position: relative; width: 280px; height: 180px; cursor: pointer; perspective: 1000px; 
-            margin: 0 auto; transition: all 0.5s ease; z-index: 10;
+            position: relative; width: 260px; height: 170px; cursor: pointer; perspective: 1000px; 
+            margin: 0 auto; transition: all 0.6s ease; z-index: 10;
         }
-        .envelope-wrapper.opened { opacity: 0; transform: scale(0.8) translateY(20px); pointer-events: none; }
-        .envelope-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--env-back); border-radius: 8px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+        .envelope-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--env-back); border-radius: 8px; box-shadow: 0 15px 35px rgba(154, 43, 66, 0.2); }
         .envelope-front { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border-radius: 0 0 8px 8px;}
         .env-left { position: absolute; left: 0; top: 0; width: 50%; height: 100%; background: var(--env-front-left); clip-path: polygon(0 0, 100% 50%, 0 100%); }
         .env-right { position: absolute; right: 0; top: 0; width: 50%; height: 100%; background: var(--env-front-right); clip-path: polygon(100% 0, 0 50%, 100% 100%); }
@@ -92,52 +93,81 @@
         .envelope-flap {
             position: absolute; top: 0; left: 0; width: 100%; height: 65%; background: var(--env-flap); border-radius: 8px 8px 0 0; 
             clip-path: polygon(0 0, 100% 0, 50% 100%); filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
+            transform-origin: top; transition: transform 0.5s ease;
         }
+        .envelope-wrapper.opening .envelope-flap { transform: rotateX(180deg); z-index: 1; }
 
-        #letterModal {
+        /* LETTER MODAL (Hidden inside envelope at first) */
+        #letterContainer {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -40%) scale(0.9);
-            width: 88%; max-width: 360px; height: 75%; max-height: 480px;
-            background: #ffffff; border-radius: 12px; z-index: 20; padding: 30px 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            text-align: left; overflow-y: auto; opacity: 0; pointer-events: none;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
-            background-image: linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px); background-size: 100% 26px;
-            scrollbar-width: thin; scrollbar-color: rgba(154, 43, 66, 0.2) transparent;
+            width: 100%; opacity: 0; pointer-events: none; transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 20; display: flex; flex-direction: column; align-items: center;
         }
-        #letterModal.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
-        #letterModal h3 { color: var(--text-accent); font-size: 19px; margin-bottom: 15px; font-weight: 700; text-align: center;}
-        #letterModal p { font-size: 15px; line-height: 1.7; margin-bottom: 15px; color: #333; }
+        #letterContainer.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
 
-        .done-btn {
-            background: var(--btn-gradient); color: white; border: none; padding: 12px 28px; border-radius: 25px; font-size: 15px; font-weight: 600;
-            box-shadow: 0 4px 10px rgba(154, 43, 66, 0.2); cursor: pointer; transition: all 0.2s ease; margin-top: 15px; display: inline-block;
+        #letterModal { 
+            background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 20px; 
+            height: 330px; width: 88%; overflow-y: auto; text-align: left; font-size: 15px; line-height: 1.7; 
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02), 0 20px 40px rgba(0,0,0,0.1); 
+            margin-bottom: 20px; -webkit-overflow-scrolling: touch; border: 1px solid rgba(255,255,255,1);
         }
-        .done-btn:active { transform: scale(0.95); }
+        
+        #letterModal::-webkit-scrollbar { width: 6px; }
+        #letterModal::-webkit-scrollbar-track { background: rgba(0,0,0,0.03); border-radius: 10px; }
+        #letterModal::-webkit-scrollbar-thumb { background: rgba(154, 43, 66, 0.3); border-radius: 10px; }
+        #letterModal h3 { color: var(--text-accent); font-size: 20px; margin-bottom: 20px; text-align: center; border-bottom: 1px solid rgba(154, 43, 66, 0.1); padding-bottom: 10px;}
+        #letterModal p { margin-bottom: 18px; color: #4a3b3d; }
 
-        /* --- Page 3: Final Message --- */
-        #screen3 { justify-content: center; }
+        /* Letter Inner Text Stagger */
+        #letterContainer.active #letterModal p { animation: textReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+        #letterContainer.active #letterModal p:nth-child(2) { animation-delay: 0.3s; }
+        #letterContainer.active #letterModal p:nth-child(3) { animation-delay: 0.6s; }
+        #letterContainer.active #letterModal p:nth-child(4) { animation-delay: 0.9s; }
+        #letterContainer.active #letterModal p:nth-child(5) { animation-delay: 1.2s; }
+        #letterContainer.active #letterModal p:nth-child(6) { animation-delay: 1.5s; }
+        #letterContainer.active #letterModal p:nth-child(7) { animation-delay: 1.8s; }
+        @keyframes textReveal { to { opacity: 1; transform: translateY(0); } }
+
+        /* Pulse effect for final question */
+        .pulse-text { animation: gentlePulse 3s infinite; }
+        @keyframes gentlePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
     </style>
 </head>
 <body>
 
-    <!-- Screen 1: Welcome -->
-    <div id="screen1" class="glass-card active">
-        <div style="margin: auto 0;">
-            <div class="heart-wrapper">
-                <svg class="premium-heart-svg" viewBox="0 0 32 29.6">
-                    <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/>
-                </svg>
-            </div>
-            <h2>Hi Sio,</h2>
-            <p>I know things have been difficult lately, but there is something I want to say to you.</p>
-        </div>
-        <button class="primary-btn" onclick="switchScreen('screen1', 'screen2')">Open</button>
+    <!-- Ambient Background Particles -->
+    <div class="particles">
+        <div class="particle" style="width: 18px; height: 18px; left: 15%; animation-duration: 12s; animation-delay: 0s;"></div>
+        <div class="particle" style="width: 28px; height: 28px; left: 35%; animation-duration: 18s; animation-delay: 2s;"></div>
+        <div class="particle" style="width: 12px; height: 12px; left: 65%; animation-duration: 10s; animation-delay: 5s;"></div>
+        <div class="particle" style="width: 22px; height: 22px; left: 85%; animation-duration: 15s; animation-delay: 1s;"></div>
+        <div class="particle" style="width: 14px; height: 14px; left: 55%; animation-duration: 14s; animation-delay: 3s;"></div>
     </div>
 
-    <!-- Screen 2: Envelope & Modal Letter -->
+    <!-- Page 1 -->
+    <div id="screen1" class="glass-card active">
+        <div>
+            <h2>Hi Sio,</h2>
+            <p>There is something I have been meaning to tell you, from the bottom of my heart.</p>
+        </div>
+        <button class="primary-btn" onclick="switchScreen('screen1', 'screen2')">Continue</button>
+    </div>
+
+    <!-- Page 2 -->
     <div id="screen2" class="glass-card">
-        <div id="focusOverlay"></div>
-        <h2 id="tapInstruction" style="position: absolute; top: 55px; transition: opacity 0.3s; width: 100%; text-align: center; left: 0; z-index: 2;">Tap to open</h2>
+        <div>
+            <div class="heart-wrapper"><svg class="premium-heart-svg" viewBox="0 0 32 29.6"><path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/></svg></div>
+            <h2>For You</h2>
+            <p>I know things have been difficult lately, and I want to be completely honest with you about everything.</p>
+        </div>
+        <button class="primary-btn" onclick="switchScreen('screen2', 'screen3')">Read my message</button>
+    </div>
+
+    <!-- Page 3 (Envelope & Letter) -->
+    <div id="screen3" class="glass-card">
+        <h2 id="tapInstruction" style="transition: opacity 0.3s; margin-bottom: 30px;">Tap to open</h2>
         
+        <!-- The Envelope -->
         <div class="envelope-wrapper" id="envelopeWidget" onclick="openLetter()">
             <div class="envelope-back"></div>
             <div class="envelope-front">
@@ -148,53 +178,73 @@
             <div class="envelope-flap"></div>
         </div>
 
-        <div id="letterModal">
-            <h3>To My Favorite Person,</h3>
-            <p>Hi Sio,</p>
-            <p>I am writing this because I know I owe you an apology. Your messages hit me hard, and they made me realize how much I have hurt you by letting my own pride and insecurities dictate how I treat us. If you were wondering why I did not reply, I was composing myself and thinking for the past few weeks, kung yung mga ginawa ko ba ay tama and if that affected what happened now. I am sorry for making you feel like you were not enough, or that I was not enough for you. I was looking for things in myself that you never asked for and never wanted. I realize now that by trying to protect my ego, I was actually pushing away the person I care about the most. I was wrong to make that choice for both of us, and I am sorry about that.</p>
-            <p>I hear you clearly. You do not need me to be anyone other than who I am, and I regret that I did not see that sooner. I understand why you feel the way you do, and I hate that I made you question yourself and our situation. If you are still open to it, I would love the chance to try again. I want to build a connection with you properly, and I want to show you that I can be the man you deserve. I know I have a lot to make up for, and I am willing to do that.</p>
-            <p>These are just simple gifts and I hope they make it up to you. I am sorry, I did not find any peonies.</p>
-            <p>Please take all the time you need. I will be here whenever you are ready to talk.</p>
-            <p style="text-align: right; margin-top: 20px; font-weight: 600;">Yours truly, Lance</p>
-            
-            <div style="text-align: center; margin-top: 20px;">
-                <button class="done-btn" onclick="switchScreen('screen2', 'screen3')">Next</button>
+        <!-- The Letter (Hidden initially) -->
+        <div id="letterContainer">
+            <div id="letterModal">
+                <h3>To My Favorite Person,</h3>
+                <p>Hi Sio,</p>
+                <p>I am writing this because I know I owe you an apology. Your messages hit me hard, and they made me realize how much I have hurt you by letting my own pride and insecurities dictate how I treat us. If you were wondering why I did not reply, I was composing myself and thinking for the past few weeks, kung yung mga ginawa ko ba ay tama and if that affected what happened now. I am sorry for making you feel like you were not enough, or that I was not enough for you. I was looking for things in myself that you never asked for and never wanted. I realize now that by trying to protect my ego, I was actually pushing away the person I care about the most. I was wrong to make that choice for both of us, and I am sorry about that.</p>
+                <p>I hear you clearly. You do not need me to be anyone other than who I am, and I regret that I did not see that sooner. I understand why you feel the way you do, and I hate that I made you question yourself and our situation. If you are still open to it, I would love the chance to try again. I want to build a connection with you properly, and I want to show you that I can be the man you deserve. I know I have a lot to make up for, and I am willing to do that.</p>
+                <p>Sa dinadami-daming problema, away, pagtatalo, at tampuhan na nangyari, hindi ko pa rin kayang bumitaw at umalis. I just found something in you that keeps me going despite everything. This will be my last, and I will not fuck this up.</p>
+                <p>These gifts were supposed to be for when we were okay, but I hope they make it up to you. I am sorry, I did not find any peonies.</p>
+                <p>Please take all the time you need. I will be here whenever you are ready to talk.</p>
+                <p style="text-align: right; font-weight: 600;">Yours truly, Lance</p>
             </div>
+            <button class="primary-btn" onclick="switchScreen('screen3', 'screen4')">Next</button>
         </div>
     </div>
 
-    <!-- Screen 3: The Final Open-Ended Question -->
-    <div id="screen3" class="glass-card">
-        <div style="margin: auto 0;">
-            <h2 style="font-size: 26px; margin-bottom: 25px;">I know I need to earn your trust back, but can I try again?</h2>
-            <p style="margin-bottom: 0;">Please take all the time you need. I'll be here whenever you're ready to talk.</p>
+    <!-- Page 4 -->
+    <div id="screen4" class="glass-card">
+        <div>
+            <h2>I truly mean every word</h2>
+            <p>You are my favorite person, and I will do whatever it takes to earn your trust back. Thank you for listening to me.</p>
+        </div>
+        <button class="primary-btn" onclick="switchScreen('screen4', 'screen5')">One last thing</button>
+    </div>
+
+    <!-- Page 5 -->
+    <div id="screen5" class="glass-card">
+        <div>
+            <h2 class="pulse-text" style="font-size: 32px;">Can I try again?</h2>
+            <p>I will be here whenever you are ready.</p>
         </div>
     </div>
 
     <script>
+        // Smooth transition between screens
         function switchScreen(currentId, nextId) {
             const current = document.getElementById(currentId);
             const next = document.getElementById(nextId);
             
             current.classList.remove('active');
+            current.classList.add('exit');
             
             setTimeout(() => {
+                current.classList.remove('exit');
                 next.classList.add('active');
-            }, 500); 
+            }, 600); 
         }
 
+        // Envelope Animation Logic
         function openLetter() {
             const envelope = document.getElementById('envelopeWidget');
-            const overlay = document.getElementById('focusOverlay');
-            const modal = document.getElementById('letterModal');
+            const letter = document.getElementById('letterContainer');
             const instruction = document.getElementById('tapInstruction');
 
-            if(!envelope.classList.contains('opened')) {
-                envelope.classList.add('opened'); 
-                overlay.classList.add('active');  
-                modal.classList.add('active');    
-                instruction.style.opacity = '0';  
-            }
+            // Fade out instructions and open flap
+            instruction.style.opacity = '0';
+            envelope.classList.add('opening');
+
+            // Wait for flap to open, then hide envelope and show letter
+            setTimeout(() => {
+                envelope.style.opacity = '0';
+                envelope.style.transform = 'scale(0.8) translateY(20px)';
+                envelope.style.pointerEvents = 'none';
+
+                letter.classList.add('active');
+                document.getElementById('letterModal').scrollTop = 0; // Ensure it starts at the top
+            }, 500);
         }
     </script>
 </body>
