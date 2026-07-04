@@ -207,8 +207,8 @@
         </div>
     </div>
 
-    <!-- Background Music -->
-    <audio id="bgMusic" loop>
+    <!-- Background Music (Autoplay added) -->
+    <audio id="bgMusic" loop autoplay>
         <source src="panaginip.mp3" type="audio/mpeg">
     </audio>
 
@@ -218,18 +218,26 @@
             setTimeout(() => {
                 document.getElementById('screen1').classList.add('active');
             }, 100); 
+            
+            // Attempt to autoplay music instantly on load
+            const music = document.getElementById('bgMusic');
+            music.volume = 0.5;
+            music.play().catch(error => {
+                console.log("Browser blocked autoplay. Music will play on first tap instead.");
+            });
         });
 
-        // Smooth transition between screens and play music
+        // Smooth transition between screens and fallback music trigger
         function switchScreen(currentId, nextId) {
             const current = document.getElementById(currentId);
             const next = document.getElementById(nextId);
             
-            // Start the music on the very first tap
+            // Fallback: If autoplay was blocked, start the music on the first tap
             if (currentId === 'screen1') {
                 const music = document.getElementById('bgMusic');
-                music.volume = 0.5; // Sets the volume to 50%
-                music.play().catch(error => console.log("Audio blocked by browser"));
+                if (music.paused) {
+                    music.play().catch(error => console.log("Audio still blocked"));
+                }
             }
 
             current.classList.remove('active');
