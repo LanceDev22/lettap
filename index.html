@@ -48,7 +48,7 @@
             box-shadow: 0 30px 60px rgba(154, 43, 66, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
             width: 90%; max-width: 420px; min-height: 520px; 
             z-index: 10; position: absolute; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; text-align: center; gap: 15px; /* Perfectly centers content */
+            align-items: center; justify-content: center; text-align: center; gap: 15px;
             opacity: 0; pointer-events: none; transform: translateY(40px) scale(0.95);
             transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
@@ -97,7 +97,7 @@
         }
         .envelope-wrapper.opening .envelope-flap { transform: rotateX(180deg); z-index: 1; }
 
-        /* LETTER MODAL (Hidden inside envelope at first) */
+        /* LETTER MODAL */
         #letterContainer {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -40%) scale(0.9);
             width: 100%; opacity: 0; pointer-events: none; transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -116,7 +116,9 @@
         #letterModal::-webkit-scrollbar-track { background: rgba(0,0,0,0.03); border-radius: 10px; }
         #letterModal::-webkit-scrollbar-thumb { background: rgba(154, 43, 66, 0.3); border-radius: 10px; }
         #letterModal h3 { color: var(--text-accent); font-size: 20px; margin-bottom: 20px; text-align: center; border-bottom: 1px solid rgba(154, 43, 66, 0.1); padding-bottom: 10px;}
-        #letterModal p { margin-bottom: 18px; color: #4a3b3d; }
+        
+        /* Justified text styling */
+        #letterModal p { margin-bottom: 18px; color: #4a3b3d; text-align: justify; }
 
         /* Letter Inner Text Stagger */
         #letterContainer.active #letterModal p { animation: textReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
@@ -135,7 +137,6 @@
 </head>
 <body>
 
-    <!-- Ambient Background Particles -->
     <div class="particles">
         <div class="particle" style="width: 18px; height: 18px; left: 15%; animation-duration: 12s; animation-delay: 0s;"></div>
         <div class="particle" style="width: 28px; height: 28px; left: 35%; animation-duration: 18s; animation-delay: 2s;"></div>
@@ -144,16 +145,14 @@
         <div class="particle" style="width: 14px; height: 14px; left: 55%; animation-duration: 14s; animation-delay: 3s;"></div>
     </div>
 
-    <!-- Page 1 -->
-    <div id="screen1" class="glass-card active">
+    <div id="screen1" class="glass-card">
         <div>
             <h2>Hi Sio,</h2>
-            <p>There is something I have been meaning to tell you, from the bottom of my heart.</p>
+            <p>I just need you to know exactly how I feel, with no filters and no pride.</p>
         </div>
         <button class="primary-btn" onclick="switchScreen('screen1', 'screen2')">Continue</button>
     </div>
 
-    <!-- Page 2 -->
     <div id="screen2" class="glass-card">
         <div>
             <div class="heart-wrapper"><svg class="premium-heart-svg" viewBox="0 0 32 29.6"><path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/></svg></div>
@@ -163,11 +162,9 @@
         <button class="primary-btn" onclick="switchScreen('screen2', 'screen3')">Read my message</button>
     </div>
 
-    <!-- Page 3 (Envelope & Letter) -->
     <div id="screen3" class="glass-card">
         <h2 id="tapInstruction" style="transition: opacity 0.3s; margin-bottom: 30px;">Tap to open</h2>
         
-        <!-- The Envelope -->
         <div class="envelope-wrapper" id="envelopeWidget" onclick="openLetter()">
             <div class="envelope-back"></div>
             <div class="envelope-front">
@@ -178,15 +175,16 @@
             <div class="envelope-flap"></div>
         </div>
 
-        <!-- The Letter (Hidden initially) -->
         <div id="letterContainer">
             <div id="letterModal">
                 <h3>To My Favorite Person,</h3>
                 <p>Hi Sio,</p>
-                <p>I am made this because I know I owe you an apology. Your messages hit me hard, and they made me realize how much I have hurt you by letting my own pride and insecurities dictate how I treat us. If you were wondering why I did not reply, I was composing myself and thinking for the past few weeks, kung yung mga ginawa ko ba ay tama and if that affected what happened now. I am sorry for making you feel like you were not enough, or that I was not enough for you. I was looking for things in myself that you never asked for and never wanted. I realize now that by trying to protect my ego, I was actually pushing away the person I care about the most. I was wrong to make that choice for both of us, and I am sorry about that.</p>
+                <p>I am writing this because I know I owe you an apology. Your messages hit me hard, and they made me realize how much I have hurt you by letting my own pride and insecurities dictate how I treat us. If you were wondering why I did not reply, I was composing myself and thinking about the past few weeks, kung yung mga ginawa ko ba ay tama and if that affected what happened now. I am sorry for making you feel like you were not enough, or that I was not enough for you. I was looking for things in myself that you never asked for and never wanted. I realize now that by trying to protect my ego, I was actually pushing away the person I care about the most. I was wrong to make that choice for both of us, and I am sorry about that.</p>
                 <p>I hear you clearly. You do not need me to be anyone other than who I am, and I regret that I did not see that sooner. I understand why you feel the way you do, and I hate that I made you question yourself and our situation. If you are still open to it, I would love the chance to try again. I want to build a connection with you properly, and I want to show you that I can be the man you deserve. I know I have a lot to make up for, and I am willing to do that.</p>
-                <p>Sa dinadami-daming problema, away, pagtatalo, at tampuhan na nangyari, hindi ko pa rin kayang bumitaw at umalis. I just found something in you that keeps me going despite everything. This will be my last, and I will not fuck this up.</p>
-                <p>These gifts were supposed to be for when we were okay, but I hope they make it up to you. I am sorry, I did not find any peonies.</p>
+                <p>Sa dinadami-daming problema, away, pagtatalo, at tampuhan na nangyari, hindi ko pa rin kayang bumitaw at umalis. I just found something in you that keeps me going despite everything that has happened. This will be my last, and I will not f this up.</p>
+                <p>Don't worry, I keep on dreaming, like you do. Building a life like you do. You are right, we can build everything that we want to without being problematic and just support each other.</p>
+                <p>These gifts were supposed to be for when we were okay, but I hope they make it up to you.</p>
+                <p>I am sorry, I did not find any peonies.</p>
                 <p>Please take all the time you need. I will be here whenever you are ready to talk.</p>
                 <p style="text-align: right; font-weight: 600;">Yours truly, Lance</p>
             </div>
@@ -194,29 +192,46 @@
         </div>
     </div>
 
-    <!-- Page 4 -->
     <div id="screen4" class="glass-card">
         <div>
             <h2>I truly mean every word</h2>
-            <p>You are my favorite person, and I will do whatever it takes to earn your trust back. Thank you for listening to me.</p>
+            <p>I know trust takes time to rebuild, but I am fully committed to waiting and doing whatever it takes. Thank you for listening to my heart.</p>
         </div>
         <button class="primary-btn" onclick="switchScreen('screen4', 'screen5')">One last thing</button>
     </div>
 
-    <!-- Page 5 -->
     <div id="screen5" class="glass-card">
         <div>
-            <h2 class="pulse-text" style="font-size: 32px;">Can I try again?</h2>
+            <h2 class="pulse-text" style="font-size: 32px;">Can I try again? 🥺</h2>
             <p>I will be here whenever you are ready.</p>
         </div>
     </div>
 
+    <!-- Background Music -->
+    <audio id="bgMusic" loop>
+        <source src="panaginip.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
-        // Smooth transition between screens
+        // Trigger the beautiful initial load fade-in for the very first screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('screen1').classList.add('active');
+            }, 100); 
+        });
+
+        // Smooth transition between screens and play music
         function switchScreen(currentId, nextId) {
             const current = document.getElementById(currentId);
             const next = document.getElementById(nextId);
             
+            // Start the music on the very first tap
+            if (currentId === 'screen1') {
+                const music = document.getElementById('bgMusic');
+                music.volume = 0.5; // Sets the volume to 50%
+                music.play().catch(error => console.log("Audio blocked by browser"));
+            }
+
             current.classList.remove('active');
             current.classList.add('exit');
             
